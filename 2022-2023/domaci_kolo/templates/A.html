@@ -1,0 +1,104 @@
+<html>
+  <meta charset="UTF-8" />
+  <!-- source: https://www.html5rocks.com/en/tutorials/file/dndfiles/ -->
+  <!-- upravené pre http://kasiopea.matfyz.cz -->
+
+  <p>
+    Níže nahraj vstupní soubor, šablona ho načte, spustí na něm tvé řešení a stáhne výstupní soubor.
+    Řešení napíšeš tak, že tento soubor otevřeš v textovém editoru a upravíš funkci
+    <code>spocitej_vysledek</code>.
+  </p>
+
+  <form>
+    <input type="file" id="files" name="file" />
+    <input type="button" value="Spusti" onclick="spusti();" />
+  </form>
+
+  <script>
+    /**
+     * Funkce s Tvým kódem, která řeší jeden problém.
+     *
+     * Můžeš využít všechny parametry funkce: cenaVelkeho, objemVelkeho, cenaMaleho, objemMaleho
+     */
+    function spocitejVysledek(
+      cenaVelkeho,
+      objemVelkeho,
+      cenaMaleho,
+      objemMaleho
+    ) {
+      let vysledek = "";
+
+      // Vypočítej, kolik stojí velké balení na litr. Na zaokrouhlení použij `Math.floor(x)`.
+      let velkeNaLitr = Math.floor(0);
+
+      // Vypočítej, kolik stojí malé balení na litr. Na zaokrouhlení použij `Math.floor(x)`.
+      let maleNaLitr = Math.floor(0);
+
+      if (velkeNaLitr <= maleNaLitr) {
+        vysledek = "NEVIM";  // Změň mě
+      } else {
+        vysledek = "NEVIM";  // Změň mě
+      }
+
+      return vysledek;
+    }
+
+    //###########################################################################################
+    // Všechen kód pod tímto komentářem slouží jen k načítání vstupu a není třeba ho upravovat. #
+    //###########################################################################################
+
+    var reader;
+    reader = new FileReader();
+    reader.onerror = function (e) {
+      alert("Nastala chyba při čtení ze souboru.!");
+    };
+    reader.onload = function (e) {
+      stahniText(main(reader.result));
+    };
+
+    function stahniText(text) {
+      var element = document.createElement("a");
+      element.setAttribute(
+        "href",
+        "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+      );
+      element.setAttribute("download", "A-vysledek.txt");
+      element.style.display = "none";
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    }
+
+    function spusti() {
+      reader.readAsText(document.getElementById("files").files[0]);
+    }
+
+    function main(vstup) {
+      const radky = vstup.split("\n");
+      let vystup = "";
+      const T = parseInt(radky[0]);
+
+      let radekIdx = 1;
+
+      function getRadek() {
+        return radky[radekIdx++];
+      }
+
+      for (let i = 1; i <= T; i++) {
+        const cenaVelkeho = parseInt(getRadek());
+        const objemVelkeho = parseInt(getRadek());
+        const cenaMaleho = parseInt(getRadek());
+        const objemMaleho = parseInt(getRadek());
+
+        vystup +=
+          spocitejVysledek(
+            cenaVelkeho,
+            objemVelkeho,
+            cenaMaleho,
+            objemMaleho
+          ) + "\n";
+      }
+      return vystup;
+    }
+  </script>
+</html>
