@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Kartičky</title>
+
+  <script>
+    // TODO: Uprav tuto funkci
+    function nejmensiCas(pocetKarticek, strihackaCas, nuzkyCas, nuzkyPocet) {
+      return 5; // Vrať celkový potřebný čas
+    }
+
+    // Načítání vstupu
+
+    function main(vstup) {
+      let radky = vstup.split('\n').map(s => s.trim());
+      let radek = 0;
+
+      let vystup = "";
+
+      let pocetProblemu = parseInt(radky[radek++]);
+
+      for (let i = 0; i < pocetProblemu; i++) {
+        let [pocetKarticek, strihackaCas, nuzkyCas, nuzkyPocet] = radky[radek++].split(' ').map(Number);
+
+        vystup += nejmensiCas(pocetKarticek, strihackaCas, nuzkyCas, nuzkyPocet);
+        vystup += '\n';
+      }
+
+      return vystup;
+    }
+
+    // Šablona
+
+    document.addEventListener("DOMContentLoaded", () => {
+      let runForm = document.getElementById("run");
+      let input = document.getElementById("input");
+      let output = document.getElementById("output");
+
+      let openForm = document.getElementById("open");
+      let file = document.getElementById("file");
+
+      let saveForm = document.getElementById("save");
+
+      runForm.addEventListener("submit", event => {
+        event.preventDefault();
+
+        try {
+          output.value = main(input.value);
+        } catch (error) {
+          console.error(error);
+          output.value = String(error);
+        }
+      });
+
+      openForm.addEventListener("submit", event => {
+        event.preventDefault();
+
+        if (file.files.length > 0) {
+          file.files[0].text().then(text => {
+            input.value = text;
+          });
+        }
+      });
+
+      saveForm.addEventListener("submit", event => {
+        event.preventDefault();
+
+        let download = new Blob([output.value], {
+          type: "text/plain",
+        });
+
+        let url = URL.createObjectURL(download);
+
+        let a = document.createElement("a");
+        a.href = url;
+        a.download = "output.txt";
+        a.click();
+
+        URL.revokeObjectURL(url);
+      });
+    });
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      height: 100%;
+    }
+
+    body {
+      width: 100%;
+      height: 100%;
+
+      display: grid;
+
+      grid-template-rows: min-content min-content 1fr min-content;
+      grid-template-columns: 1fr 1fr;
+
+      margin: 0;
+      padding: 1rem;
+      gap: 0.5rem;
+    }
+
+    .execution {
+      display: contents;
+    }
+
+    .run {
+      grid-column: 1 / 3;
+    }
+
+    .widget {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .widget> :first-child {
+      flex-grow: 1;
+    }
+
+    .label {
+      display: block;
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .text-area {
+      resize: none;
+    }
+
+    .file-input {
+      width: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <label class="label" for="input">Vstup</label>
+  <label class="label" for="output">Výstup</label>
+
+  <form class="widget" id="open">
+    <input class="file-input" type="file" id="file" required>
+    <button type="submit">Otevřít</button>
+  </form>
+
+  <form class="widget" id="save">
+    <button type="submit">Stáhnout</button>
+  </form>
+
+  <form class="execution" id="run">
+    <textarea class="text-area" id="input"></textarea>
+    <textarea class="text-area" id="output" readonly></textarea>
+
+    <button class="run" type="submit">Spustit</button>
+  </form>
+</body>
+
+</html>
