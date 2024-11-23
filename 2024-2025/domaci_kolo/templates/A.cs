@@ -18,7 +18,7 @@ void PrectiVstup(TextReader vstup, TextWriter vystup)
         int nuzkyCas = int.Parse(problem[2]);
         int nuzkyPocet = int.Parse(problem[3]);
 
-        vystup.WriteLine(MinimalniCas(nuzkyCas, strihackaCas, nuzkyCas, nuzkyPocet));
+        vystup.WriteLine(MinimalniCas(pocetKarticek, strihackaCas, nuzkyCas, nuzkyPocet));
     }
 }
 
